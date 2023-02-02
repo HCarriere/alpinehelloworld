@@ -98,5 +98,15 @@ docker push ${DOCKERHUB_ID}/$IMAGE_NAME:$IMAGE_TAG
           }
        }
      }
+     stage('Slack notification') {
+        post {
+            success {
+                slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            }
+            failure {
+                slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            }   
+        }
+     }
   }
 }
